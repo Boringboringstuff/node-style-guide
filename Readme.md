@@ -1,60 +1,26 @@
 # Node.js Style Guide
 
 This is a guide for writing consistent and aesthetically pleasing node.js code.
-It is inspired by what is popular within the community, and flavored with some
-personal opinions.
 
 There is a .jshintrc which enforces these rules as closely as possible. You can
 either use that and adjust it, or use
 [this script](https://gist.github.com/kentcdodds/11293570) to make your own.
 
-This guide was created by [Felix Geisendörfer](http://felixge.de/) and is
-licensed under the [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/)
-license. You are encouraged to fork this repository and make adjustments
-according to your preferences.
-
-![Creative Commons License](http://i.creativecommons.org/l/by-sa/3.0/88x31.png)
-
 ## Table of contents
 
 ### Formatting
-* [2 Spaces for indentation](#2-spaces-for-indentation)
-* [Newlines](#newlines)
-* [No trailing whitespace](#no-trailing-whitespace)
-* [Use Semicolons](#use-semicolons)
-* [80 characters per line](#80-characters-per-line)
-* [Use single quotes](#use-single-quotes)
-* [Opening braces go on the same line](#opening-braces-go-on-the-same-line)
-* [Declare one variable per var statement](#declare-one-variable-per-var-statement)
 
 ### Naming Conventions
-* [Use lowerCamelCase for variables, properties and function names](#use-lowercamelcase-for-variables-properties-and-function-names)
-* [Use UpperCamelCase for class names](#use-uppercamelcase-for-class-names)
-* [Use UPPERCASE for Constants](#use-uppercase-for-constants)
 
 ### Variables
-* [Object / Array creation](#object--array-creation)
 
 ### Conditionals
-* [Use the === operator](#use-the--operator)
-* [Use multi-line ternary operator](#use-multi-line-ternary-operator)
-* [Use descriptive conditions](#use-descriptive-conditions)
 
 ### Functions
-* [Write small functions](#write-small-functions)
-* [Return early from functions](#return-early-from-functions)
-* [Name your closures](#name-your-closures)
-* [No nested closures](#no-nested-closures)
-* [Method chaining](#method-chaining)
 
 ### Comments
-* [Use slashes for comments](#use-slashes-for-comments)
 
 ### Miscellaneous
-* [Object.freeze, Object.preventExtensions, Object.seal, with, eval](#objectfreeze-objectpreventextensions-objectseal-with-eval)
-* [Requires At Top](#requires-at-top)
-* [Getters and setters](#getters-and-setters)
-* [Do not extend built-in prototypes](#do-not-extend-built-in-prototypes)
 
 ## Formatting
 
@@ -62,7 +28,7 @@ You may want to use [editorconfig.org](http://editorconfig.org/) to enforce the 
 
 ### 2 Spaces for indentation
 
-Use 2 spaces for indenting your code and swear an oath to never mix tabs and
+Use 1 tab for indenting your code and swear an oath to never mix tabs and
 spaces - a special kind of hell is awaiting you otherwise.
 
 ### Newlines
@@ -73,24 +39,15 @@ of a file. Windows-style newlines (`\r\n`) are forbidden inside any repository.
 ### No trailing whitespace
 
 Just like you brush your teeth after every meal, you clean up any trailing
-whitespace in your JS files before committing. Otherwise the rotten smell of
-careless neglect will eventually drive away contributors and/or co-workers.
+whitespace in your JS files before committing.
 
-### Use Semicolons
+### Do Not Use Semicolons
 
-According to [scientific research][hnsemicolons], the usage of semicolons is
-a core value of our community. Consider the points of [the opposition][], but
-be a traditionalist when it comes to abusing error correction mechanisms for
-cheap syntactic pleasures.
-
-[the opposition]: http://blog.izs.me/post/2353458699/an-open-letter-to-javascript-leaders-regarding
-[hnsemicolons]: http://news.ycombinator.com/item?id=1547647
+The usage of semicolons used to be a core value of JS and is no longer need.
 
 ### 80 characters per line
 
-Limit your lines to 80 characters. Yes, screens have gotten much bigger over the
-last few years, but your brain has not. Use the additional room for split screen,
-your editor supports that, right?
+Limit your lines to 80 characters.
 
 ### Use single quotes
 
@@ -99,7 +56,7 @@ Use single quotes, unless you are writing JSON.
 *Right:*
 
 ```js
-var foo = 'bar';
+var foo = 'bar'
 ```
 
 *Wrong:*
@@ -116,7 +73,7 @@ Your opening braces go on the same line as the statement.
 
 ```js
 if (true) {
-  console.log('winning');
+  console.log('winning')
 }
 ```
 
@@ -129,25 +86,26 @@ if (true)
 }
 ```
 
-Also, notice the use of whitespace before and after the condition statement.
+### Declare one variable per let statement
 
-### Declare one variable per var statement
-
-Declare one variable per var statement, it makes it easier to re-order the
+Declare one variable per let statement, it makes it easier to re-order the
 lines. However, ignore [Crockford][crockfordconvention] when it comes to
 declaring variables deeper inside a function, just put the declarations wherever
-they make sense.
+they make sense. If declaring multiple empty variables at the head of your js
+page, it's better to declare them as a group if they will be related to one
+another.
 
 *Right:*
 
 ```js
-var keys   = ['foo', 'bar'];
-var values = [23, 42];
+let keys   = ['foo', 'bar']
+let values = [23, 42]
+let dog, cat, horse, cow, pig, wolf
 
-var object = {};
+let object = {}
 while (keys.length) {
-  var key = keys.pop();
-  object[key] = values.pop();
+  let key = keys.pop()
+  object[key] = values.pop()
 }
 ```
 
@@ -160,8 +118,8 @@ var keys = ['foo', 'bar'],
     key;
 
 while (keys.length) {
-  key = keys.pop();
-  object[key] = values.pop();
+  key = keys.pop()
+  object[key] = values.pop()
 }
 ```
 
@@ -178,7 +136,7 @@ abbreviations should generally be avoided.
 *Right:*
 
 ```js
-var adminUser = db.query('SELECT * FROM users ...');
+let adminUser = db.query('SELECT * FROM users ...')
 ```
 
 *Wrong:*
@@ -187,65 +145,21 @@ var adminUser = db.query('SELECT * FROM users ...');
 var admin_user = db.query('SELECT * FROM users ...');
 ```
 
-### Use UpperCamelCase for class names
-
-Class names should be capitalized using `UpperCamelCase`.
-
-*Right:*
-
-```js
-function BankAccount() {
-}
-```
-
-*Wrong:*
-
-```js
-function bank_Account() {
-}
-```
-
-### Use UPPERCASE for Constants
-
-Constants should be declared as regular variables or static class properties,
-using all uppercase letters.
-
-*Right:*
-
-```js
-var SECOND = 1 * 1000;
-
-function File() {
-}
-File.FULL_PERMISSIONS = 0777;
-```
-
-*Wrong:*
-
-```js
-const SECOND = 1 * 1000;
-
-function File() {
-}
-File.fullPermissions = 0777;
-```
-
-[const]: https://developer.mozilla.org/en/JavaScript/Reference/Statements/const
 
 ## Variables
 
 ### Object / Array creation
 
-Use trailing commas and put *short* declarations on a single line. Only quote
-keys when your interpreter complains:
+Don't use trailing commas and put *short* declarations on a single line. 
+Only quote keys when your interpreter complains:
 
 *Right:*
 
 ```js
-var a = ['hello', 'world'];
-var b = {
+let a = ['hello', 'world'];
+let b = {
   good: 'code',
-  'is generally': 'pretty',
+  'is generally': 'pretty'
 };
 ```
 
@@ -255,8 +169,8 @@ var b = {
 var a = [
   'hello', 'world'
 ];
-var b = {"good": 'code'
-        , is generally: 'pretty'
+var b = {"good": 'code',
+         is generally: 'pretty',
         };
 ```
 
@@ -270,7 +184,7 @@ the triple equality operator as it will work just as expected.
 *Right:*
 
 ```js
-var a = 0;
+let a = 0;
 if (a !== '') {
   console.log('winning');
 }
@@ -295,7 +209,7 @@ The ternary operator should not be used on a single line. Split it up into multi
 *Right:*
 
 ```js
-var foo = (a === b)
+let foo = (a === b)
   ? 1
   : 2;
 ```
@@ -313,7 +227,7 @@ Any non-trivial conditions should be assigned to a descriptively named variable 
 *Right:*
 
 ```js
-var isValidPassword = password.length >= 4 && /^(?=.*\d).{4,}$/.test(password);
+let isValidPassword = password.length >= 4 && /^(?=.*\d).{4,}$/.test(password);
 
 if (isValidPassword) {
   console.log('winning');
@@ -334,7 +248,7 @@ if (password.length >= 4 && /^(?=.*\d).{4,}$/.test(password)) {
 
 Keep your functions short. A good function fits on a slide that the people in
 the last row of a big room can comfortably read. So don't count on them having
-perfect vision and limit yourself to ~15 lines of code per function.
+perfect vision and limit yourself to ~20 lines of code per function.
 
 ### Return early from functions
 
@@ -344,7 +258,7 @@ as possible.
 *Right:*
 
 ```js
-function isPercentage(val) {
+let isPercentage = (val) => {
   if (val < 0) {
     return false;
   }
@@ -378,7 +292,7 @@ further:
 
 ```js
 function isPercentage(val) {
-  var isInRange = (val >= 0 && val <= 100);
+  let isInRange = (val >= 0 && val <= 100);
   return isInRange;
 }
 ```
@@ -487,7 +401,7 @@ segments of your code. Don't use comments to restate trivial things.
 
 ```js
 // 'ID_SOMETHING=VALUE' -> ['ID_SOMETHING=VALUE', 'SOMETHING', 'VALUE']
-var matches = item.match(/ID_([^\n]+)=([^\n]+)/));
+let matches = item.match(/ID_([^\n]+)=([^\n]+)/));
 
 // This function has a nasty side effect where a failure to increment a
 // redis counter used for statistics will cause an exception. This needs
@@ -496,7 +410,7 @@ function loadUser(id, cb) {
   // ...
 }
 
-var isSessionValid = (session.expires < Date.now());
+let isSessionValid = (session.expires < Date.now());
 if (isSessionValid) {
   // ...
 }
@@ -529,7 +443,7 @@ Crazy shit that you will probably never need. Stay away from it.
 
 ### Requires At Top
 
-Always put requires at top of file to clearly illustrate a file's dependencies. Besides giving an overview for others at a quick glance of dependencies and possible memory impact, it allows one to determine if they need a package.json file should they choose to use the file elsewhere.
+Always put requires at top of file to clearly illustrate a file's dependencies. Besides giving an overview for others at a quick glance of dependencies and possible memory impact, it allows one to determine if they need a package.json file should they choose to use the file elsewhere. Be sure to use const for any requires.
 
 ### Getters and setters
 
@@ -549,7 +463,7 @@ be forever grateful.
 *Right:*
 
 ```js
-var a = [];
+let a = [];
 if (!a.length) {
   console.log('winning');
 }
